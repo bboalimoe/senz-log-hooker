@@ -1,0 +1,22 @@
+[32m提示：您可以敲入 rs 命令并回车来重启本进程[39m
+[INFO]: Cloud Code Project Home Directory: [32m/Users/zhanghengyang/WebstormProjects/senz-log-hook/[39m
+[INFO]: Current App: [31morigin rqjs3x0eartn6ru01587ecit95agj2b4itrn3u2818ml8szx[39m
+------ Receiving ------
+* Waiting for Msg from publisher.
+task_interval 10000
+请使用浏览器打开 http://localhost:3000/avos
+Mock Server is listening on 3000
+Press CTRL-C to stop server.
+There is a new location comming.
+The new location object id: 5535c9aee4b0825685fa1669
+------ Sending ------
+* The chosen event is new_location_arrival
+* The content of Msg is [object Object]
+* Sending Msg...
+
+* Received Msg from event.
+a new msg ===========> 
+{ objectId: '5535c9aee4b0825685fa1669',
+  timestamp: 1430137884624 }
+cache objects keyslocation,5535c9aee4b0825685fa1669
+task started

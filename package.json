@@ -1,0 +1,15 @@
+{
+    "name": "Senz-Log-Hook",
+    "description": "Cloud Code test project.",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+
+        "wascally"     : "latest",
+        "memory-cache" : "",
+        "tracer" : "",
+        "node-logentries": "0.0.2"
+
+
+    }
+}
