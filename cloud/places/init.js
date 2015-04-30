@@ -63,6 +63,7 @@ var GoProcess = function(msg)
     obj["tries"] = 0;
     obj["user"] = {};
     m_cache.put(msg.objectId,obj);
+    m_task.start(msg.objectId);
 
 
 

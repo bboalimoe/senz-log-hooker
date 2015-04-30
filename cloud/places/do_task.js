@@ -8,6 +8,7 @@ var AV = require("avoscloud-sdk").AV;
 var interval = require("cloud/places/lib/interval");
 var req_lib = require("cloud/places/lib/http_wrapper");
 
+
 var suc_ids = [];//global value for filter the final save rawDataIds.
 
 var request_ids = new Set(); //global value for deletion
@@ -15,15 +16,16 @@ var request_ids = new Set(); //global value for deletion
 var fetch_trace = function(ids){
     //questions on whether to set a request timeout
     console.log("fetch trace starting !!!!!!")
-    UserSensor = AV.Object.extend("UserSensor");
+    var UserLocation = AV.Object.extend(config.source_db.target_class);
 
     var query_promise = function(id) {
         var promise = new AV.Promise();
-        var query = new AV.Query(UserSensor);
+        var query = new AV.Query(UserLocation);
         query.equalTo("objectId", id);
         console.log("request id =====>>>>" + id);
         query.find().then(
             function (o) {
+                console.log(JSON.stringify(o));
                 console.log("object" + o[0]);
                 o = o[0];
                 console.log("js fetch trace success");

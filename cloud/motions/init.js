@@ -21,7 +21,7 @@ var logger = require("cloud/motions/lib/logger");
 
 
 var event = "new_motion_arrival";
-var queue_name = "motions";
+var queue_name = "motionsOfArrival";
 
 
 exports.init = function(){
@@ -38,8 +38,10 @@ exports.init = function(){
         if(m_cache.size()>0){
             var keys = m_cache.keys();
             var id = keys.pop();
-            if(3>m_cache.get(id).tries>0 ){
-                logger.warning("request pre-failed id service started, id >>" + id);
+            var tries = m_cache.get(id).tries;
+            if(tries>0){
+                logger.warn("the id " + id + "tried" + m_cache.get(id).tries+ "times");
+                logger.warn("request pre-failed id service started, id >>" + id);
                 m_task.start(id);
             }
         }
@@ -65,14 +67,16 @@ exports.init = function(){
 
 var GoProcess = function(msg)
 {
+
     logger.info("a new motion data arrived");
-    logger.info("data is " + msg);
+    //logger.info("data is " + msg);
     var obj = {};
     obj["timestamp"] = msg.timestamp;
     obj["tries"] = 0;
     obj["user"] = {};
     m_cache.put(msg.objectId,obj);
-    logger.warning("request new id service started, id >>" + id);
+    //logger.error("debug here");
+    //logger.warn("request new id service started, id >>" + id);
     m_task.start(msg.objectId);
 
 

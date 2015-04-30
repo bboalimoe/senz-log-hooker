@@ -12,7 +12,7 @@ var req_lib = require("cloud/motions/lib/http_wrapper");
 var get_raw_data = function(id){
     //questions on whether to set a request timeout
     logger.info("fetch trace started")
-    UserSensor = AV.Object.extend("UserSensor");
+    var UserSensor = AV.Object.extend(config.source_db.target_class);
 
     var query_promise = function(id) {
         var promise = new AV.Promise();
@@ -97,15 +97,21 @@ var delete_obj = function(values){
     if (values.tries >= 3) {
 
         m_cache.del(id);
-        logger.debug("exhausted id is ,")
+        logger.debug("exhausted id is ," + id);
         return true;
 
+    }
+    else{
+        logger.debug("the id is not exhausted");
+        return false;
     }
 };
 
 var check_exhausted = function(id){
 
     var r = delete_obj(m_cache.get(id));
+    //var r = JSON.stringify(m_cache.get(id));
+    //logger.error(r);
     return r;
 };
 
@@ -118,13 +124,15 @@ var start = function(request_id){
 
     logger.info("task started");
     if (typeof request_id != typeof "str" ) {
-        logger.error("type of requestId is illegal")
+        logger.error("type of requestId is illegal");
         return;
     }
+    //
+
 
     if(check_exhausted(request_id)) {
-        logger.warning("retries too much, throw the id's request")
-        return ;
+        logger.warn("retries too much, throw the id's request")
+
     };
 
     var promise = get_raw_data(request_id);

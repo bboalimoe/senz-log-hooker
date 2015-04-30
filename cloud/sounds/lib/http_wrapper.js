@@ -20,13 +20,14 @@ var lean_post = function (APP_ID, APP_KEY, params) {
             },
             json: params
         },
-        function(err,res,body){
+        function(err,res,body_str){
             if(err != null ){
+                
+                logger.error("request error log is,%s", err);
                 promise.reject("request error");}
             else {
-                logger.error("request error log is,%s", err);
-                body = JSON.stringify(body)
-                logger.info("body is ,s%", body);
+                body_str = JSON.stringify(body_str);
+                logger.info("body is " + body_str);
                 promise.resolve("save success")
             }
         }
@@ -42,7 +43,7 @@ var load_data = function(body) {
     var params = {};
     params["processStatus"] = "untreated";
     if ("l2_text" in body){
-        params["soundType"] = config.stat_dict[body.predSS[0]];
+        params["soundType"] = config.sound_pred_code[body.l2_text];
 
     }
     else{

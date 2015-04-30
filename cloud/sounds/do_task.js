@@ -20,7 +20,7 @@ var get_audio = function(id){
         query.equalTo("objectId", id);
         query.find().then(
             function (obj_list) {
-                logger.debug("the object is " + JSON.stringify(o[0]));
+                logger.debug("the object is " + JSON.stringify(obj_list[0]));
                 var o = obj_list[0];
                 var obj = {};
                 var audio_url = o.get("audio").url();
@@ -50,16 +50,14 @@ var get_audio = function(id){
 };
 
 var get_request_body = function(obj){
-    /// batch request body for poi service
 
-    logger.debug("object list is ",JSON.stringify(obj));
+    logger.debug("object  is " + JSON.stringify(obj));
     var body = new Object();
     var id = Object.keys(obj)[0];
-    body["timestamp"] = obj[id].timestamp;
-    body["objectId"] = id;// here save the object Id for latter operation
-    body["rawData"] = obj[id].rawData;
-    body["clfType"] = ["SS"];
-    //console.log("a is " + JSON.stringify(a));
+    body = obj[id];
+    body["objectId"] = id;
+
+    logger.debug("sound service body is " + JSON.stringify(body));
 
     return body
 
@@ -96,9 +94,12 @@ var delete_obj = function(values){
     if (values.tries >= 3) {
 
         m_cache.del(id);
-        logger.debug("exhausted id is ,")
+        logger.debug("exhausted id is ," + id);
         return true;
+    }
+    else{
 
+        return false;
     }
 };
 
@@ -116,16 +117,16 @@ function failed(request_id) {
 var start = function(request_id){
 
     logger.info("task started");
-    logger.info("id > " + id );
+    logger.info("id > " + request_id );
     if (typeof request_id != typeof "str" ) {
         logger.error("type of requestId is illegal")
         return;
     }
 
-    if(check_exhausted(request_id)) {
-        logger.warning("retries too much, throw the id's request")
-        return ;
-    };
+    //if(check_exhausted(request_id)) {
+    //    logger.warn("retries too much, throw the id's request")
+    //
+    //};
 
     var promise = get_audio(request_id);
 

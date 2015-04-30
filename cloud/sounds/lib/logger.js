@@ -28,8 +28,8 @@ exports.debug = function(debug){
 //    log.notice(log_tag + notice);
 //}
 
-exports.warning = function(warning){
-    log.warning(log_tag + warning);
+exports.warn = function(warn){
+    log.warn(log_tag + warn);
 }
 
 exports.error = function(err){

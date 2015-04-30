@@ -30,7 +30,7 @@ exports.init = function(){
 
 
     sub.registerEvent(GoProcess,queue_name,event);
-    logger.debug("task_interval " + task_interval);
+    //logger.debug("task_interval " + task_interval);
 
 
     //setInterval(
@@ -39,7 +39,7 @@ exports.init = function(){
     //        var keys = m_cache.keys();
     //        keys.forEach(function(id){
     //            if(3>m_cache.get(id).tries>0 ) {
-    //                logger.warning("request pre-failed id service started, id >>" + id);
+    //                logger.warn("request pre-failed id service started, id >>" + id);
     //                m_task.start(id);
     //            }
     //        });
@@ -68,14 +68,15 @@ exports.init = function(){
 
 var GoProcess = function(msg)
 {
-    //logger.info("a new sound data arrived");
-    //logger.info("data is " + JSON.stringify(msg));
-    //var obj = {};
-    //obj["timestamp"] = msg.timestamp;
-    //obj["tries"] = 0;
-    //obj["user"] = {};
-    //m_cache.put(msg.objectId,obj);
-    //logger.warning("request new id service started, id >>" + id);
+    logger.info("a new sound data arrived");
+    logger.info("data is " + JSON.stringify(msg));
+    var obj = {};
+    obj["timestamp"] = msg.timestamp;
+    obj["tries"] = 0;
+    obj["user"] = {};
+    //logger.warn(sb);
+    m_cache.put(msg.objectId,obj);
+    logger.warn("request new id service started, id >>" + msg.objectId);
     m_task.start(msg.objectId);
 
 
