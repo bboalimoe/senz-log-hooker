@@ -5,12 +5,13 @@ var req = require("request");
 var m_cache = require("location-cache");
 var config = require("cloud/places/config.js").config;
 var type = require("cloud/places/lib/lean_type.js");
+var logger = require("cloud/places/lib/logger");
 
 var suc_ids = [];
 
 var lean_post = function (APP_ID, APP_KEY, params) {
-    console.log("fuck here");
-    console.log("body params,%s,%s", (typeof params), JSON.stringify(params));
+
+    logger.debug("body params' type is %s, \n params is %s", (typeof params), JSON.stringify(params));
     var promise = new AV.Promise();
     req.post(
         {
@@ -24,19 +25,18 @@ var lean_post = function (APP_ID, APP_KEY, params) {
         },
         function(err,res,body){
 
-            if(err != null ){ promise.reject("batch request ERROR");}
+            if(err != null ){
+                promise.reject("batch request ERROR");}
 
             else {
-                console.log("request error log is,%s", err);
+                logger.error("request error log is %s", err);
                 var body_str = JSON.stringify(body)
-                console.log("body is ,s%", body_str);
-
                 promise.resolve(body);
             }
         }
     );
     return promise
-   /// promise 传出去。。
+   /// promise
 };
 
 var batch_body = function (req_list) {
@@ -54,7 +54,7 @@ var batch_body = function (req_list) {
     });
     body["requests"] = lean_list;
 
-    console.log("batch requests body " + body);
+    logger.debug("batch requests body " + body);
 
     return body
 
@@ -65,24 +65,21 @@ var load_data = function(body) {
     var single_req_list = [];
     //console.log("response results" + typeof json_body);
     body.results.parse_poi.forEach(function (obj) {
-        var mid = {};
+        var params = {};
         pois = obj.pois;
         var most_probable_poi = pois.sort(
             function (a, b) {
             return parseFloat(a.distance) - parseFloat(b.distance)
         })[0];
         suc_ids.push(obj.objectId);
-        mid["userRawdataId"] = obj.objectId;
-        mid["timestamp"] = obj.timestamp;
-        mid["processStatus"] = "untreated";
-        mid["poiType"] = most_probable_poi.poiType;
-        mid["poiName"] = most_probable_poi.name;
-        console.log("obj  + ======>>" + obj.objectId);
-
-        console.log("user id  ====>" + m_cache.get(obj.objectId)["user"].id)
-        mid["user"] = type.leanUser(m_cache.get(obj.objectId)["user"].id);
-        single_req_list.push(mid);
-        console.log("mid\n" + JSON.stringify(mid));
+        params["userRawdataId"] = obj.objectId;
+        params["timestamp"] = obj.timestamp;
+        params["processStatus"] = "untreated";
+        params["poiType"] = most_probable_poi.poiType;
+        params["poiName"] = most_probable_poi.name;
+        params["user"] = type.leanUser(m_cache.get(obj.objectId)["user"].id);
+        single_req_list.push(params);
+        logger.debug("params are \n" + JSON.stringify(params));
 
     });
     return [single_req_list,suc_ids];
@@ -99,12 +96,14 @@ var batch_post = function (url, params, max_timeout) {
 
         },
         function(err,res,body){
-            if(err != null ){ promise.reject("request error");}
+            if(err != null ){
+                logger.error("locations batch post meets errors: " + err);
+                promise.reject("request error");
+            }
             else {
                 var body_str = JSON.stringify(body);
-                console.log("body is ,s%", body_str);
+                logger.debug("locations batch service's body is ",body_str);
                 var tuple = load_data(body);
-                //todo do the error ids' removments after the serv post response
                 ///write_in_db body wrapping
                 promise.resolve( [batch_body(tuple[0]),tuple[1]] );
             }

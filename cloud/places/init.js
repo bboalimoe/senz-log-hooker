@@ -4,10 +4,9 @@
 
 var sub = require('cloud/rabbit_lib/subscriber');
 var m_cache = require("location-cache");
-
 var m_task = require("cloud/places/do_task");
 var interval = require("cloud/places/lib/interval");
-
+var logger = require("cloud/places/lib/logger");
 var task_interval = interval.task_interval.check_interval;
 var prev_interval = interval.prev_interval;
 
@@ -30,7 +29,7 @@ exports.init = function(){
 
 
     sub.registerEvent(GoProcess,queue_name,event);
-    console.log("task_interval " + task_interval);
+    logger.info("task_interval is " + task_interval);
 
     setInterval(m_task.start,task_interval);
 
@@ -56,15 +55,14 @@ exports.init = function(){
 
 var GoProcess = function(msg)
 {
-    console.log("a new msg ===========> ");
-    console.log(msg);
+    logger.info("a new msg ===========> ");
+    logger.info(JSON.stringify(msg));
     var obj = {};
     obj["timestamp"] = msg.timestamp;
     obj["tries"] = 0;
     obj["user"] = {};
     m_cache.put(msg.objectId,obj);
     m_task.start(msg.objectId);
-
 
 
 }

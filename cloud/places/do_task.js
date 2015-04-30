@@ -7,6 +7,7 @@ var m_cache = require("location-cache");
 var AV = require("avoscloud-sdk").AV;
 var interval = require("cloud/places/lib/interval");
 var req_lib = require("cloud/places/lib/http_wrapper");
+var logger = require("cloud/places/lib/logger");
 
 
 var suc_ids = [];//global value for filter the final save rawDataIds.
@@ -15,38 +16,40 @@ var request_ids = new Set(); //global value for deletion
 
 var fetch_trace = function(ids){
     //questions on whether to set a request timeout
-    console.log("fetch trace starting !!!!!!")
+    logger.info("fetch trace starting !!!!!!")
     var UserLocation = AV.Object.extend(config.source_db.target_class);
 
     var query_promise = function(id) {
         var promise = new AV.Promise();
         var query = new AV.Query(UserLocation);
         query.equalTo("objectId", id);
-        console.log("request id =====>>>>" + id);
+        logger.debug("request id =====>>>>" + id);
         query.find().then(
-            function (o) {
-                console.log(JSON.stringify(o));
-                console.log("object" + o[0]);
-                o = o[0];
-                console.log("js fetch trace success");
+            function (obj_list) {
+                logger.debug(JSON.stringify(obj_list));
+                if (obj_list.length > 1){
+                    logger.error("there are errors in the leancloud query api");
+                }
+                var obj = obj_list[0];
+                logger.info("fetch leancloud trace successfully");
                 var a = {};
-                var user = o.get("user");
-                var location = o.get("location");
-                var timestamp = o.get("timestamp");
-                a[o.id] = {
+                var user = obj.get("user");
+                var location = obj.get("location");
+                var timestamp = obj.get("timestamp");
+                a[obj.id] = {
                     "location": location,
                     "user": user,
                     "timestamp": timestamp
                 };
-                m_cache.get(o.id)["user"] = user;
+                m_cache.get(obj.id)["user"] = user;
                 suc_ids.push(id);
                 promise.resolve(a);
             },
             function (err) {
                 //
                 promise.resolve(id);
-                console.log("error is " + err);
-                console.log("error id is " + id);
+                logger.error("error is " + err);
+                logger.error("error id is " + id);
             }
         );
         return promise;
@@ -63,22 +66,20 @@ var fetch_trace = function(ids){
 var batch_body = function(obj_l){
     /// batch request body for poi service
 
-    console.log("object list is ,%s >>>>>",JSON.stringify(obj_l));
-    var l = [];
+    logger.debug("object list is ,%s >>>>>",JSON.stringify(obj_l));
+    var locations = [];
     obj_l.forEach(function(obj){
         //console.log("obj is >>>>>>>>" + JSON.stringify(obj));
-        var a = new Object();
+        var obj = new Object();
         var id = Object.keys(obj)[0];
-        a["timestamp"] = obj[id].timestamp;
-        a["objectId"] = id;
-        a["location"] = obj[id].location;
+        obj["timestamp"] = obj[id].timestamp;
+        obj["objectId"] = id;
+        obj["location"] = obj[id].location;
         //console.log("a is " + JSON.stringify(a));
-        l.push(a);
+        locations.push(obj);
     });
-
-    var body = {"locations":l};
+    var body = {"locations":locations};
     //console.log("body is ,%s",JSON.stringify(body));
-
     return body
 
 };
@@ -93,7 +94,7 @@ function location_service(body,mode){
     var serv_url = config.serv_url;
     var timeout = 0.5 * interval.task_interval.check_interval;
 
-    console.log("request the poi type of specific geopoint ");
+    logger.info("request the poi type of specific geopoint ");
     //http batch request
     return req_lib.batch_post(serv_url,body,timeout);
     //var sound_post = function(url,params,success_cbk,max_timeout){
@@ -138,7 +139,14 @@ var expired = function(values){
     if (values.tries >= 3) {
 
         request_ids.delete(id);
-        return m_cache.del(id);
+        logger.warn("the objectId (" + id + ")" + " tries too much,throw away~");
+        try{
+            return m_cache.del(id);
+
+        }
+        catch(e){
+            logger.error("error is " + e);
+        }
 
     }
 };
@@ -148,14 +156,7 @@ var check_exhausted = function(i){
     var p = {};
     var ids = request_ids;
     ids.forEach(function (id) {
-
-        console.log("id =====> " + id);
-        console.log("start fetch objects from cache " + m_cache.get(id));
         var r = expired(m_cache.get(id));
-
-        if (!r) {
-            console.error("there is one error when deletion");
-        }
 
     });
 };
@@ -171,13 +172,11 @@ var get_cache_ids = function(){
 
 var start = function(){
 
-    console.log("task started");
+    logger.info("task started");
     request_ids = get_cache_ids();
 
-    console.log("request_ids" + request_ids);
-
     if (!request_ids.size) {
-        console.log("empty list");
+        logger.warn("empty list,no need to go on. let's return");
         return;
     }
     check_exhausted();
@@ -196,12 +195,12 @@ var start = function(){
             p.then(
                 function (tuple) {
 
-                    console.log("req service success");
+                    logger.info("location service requested successfully");
                     suc_ids = tuple[1];
                     return write_batch_data(tuple[0]);
                 },
                 function () {
-                    console.log("req service failed");
+                    logger.info("location service requested in fail");
 
                 }
             ).then(
@@ -209,26 +208,24 @@ var start = function(){
 
                     body.forEach(function(obj){
                         if("error" in obj){
+                            logger.warn("objectId requested wrongly, Id is " + suc_ids[body.indexOf(obj)]);
                             delete suc_ids[body.indexOf(obj)];
                         }
                     })
-                    console.log("succeessfully retrieved object ids" + suc_ids);
+                    logger.info("succeessfully retrieved object ids" + suc_ids);
                     cache_purge(suc_ids);
-                    console.log("one process end success");
-                    console.log("##############\n############\n###########");
+                    logger.info("one process ends successfully");
 
                 },
                 function(result){
-                    console.log("one process end failed");
-                    console.log("##############\n############\n###########");
+                    logger.error("one process ends in fail");
 
                 }
             )
 
         },
         function (errors) {
-
-            console.log("id list retrieve failed, failed ids are ,%s",errors);
+            logger.error("id list retrieve failed, failed ids are ,%s",errors);
         })
 
     };
