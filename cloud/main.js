@@ -5,8 +5,8 @@ var motion = require("cloud/motions/init");
 var req = require("request");
 //initiate the baidu_poi process
 //bd_poi.init();
-sound.init();
-//motion.init();
+//sound.init();
+motion.init();
 
 AV.Cloud.define("hello", function(request, response) {
     response.success("Hello world!");

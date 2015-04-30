@@ -22,11 +22,11 @@ var lean_post = function (APP_ID, APP_KEY, params) {
         },
         function(err,res,body){
             if(err != null ){
+                logger.error("request error log is" + err);
                 promise.reject("request error");}
             else {
-                logger.error("request error log is,%s", err);
-                body = JSON.stringify(body)
-                logger.info("body is ,s%", body);
+                var body_str = JSON.stringify(body)
+                logger.info("body is " + body_str);
                 promise.resolve("save success")
             }
         }
