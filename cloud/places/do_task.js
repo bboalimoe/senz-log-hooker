@@ -70,6 +70,7 @@ var batch_body = function(obj_l){
     var locations = [];
     obj_l.forEach(function(obj){
         //console.log("obj is >>>>>>>>" + JSON.stringify(obj));
+        logger.debug("batch pre-request object is " + JSON.stringify(obj));
         var obj = new Object();
         var id = Object.keys(obj)[0];
         obj["timestamp"] = obj[id].timestamp;

@@ -28,6 +28,7 @@ exports.debug = function(debug){
 //    log.notice(log_tag + notice);
 //}
 
+
 exports.warn = function(warn){
     log.warn(log_tag + warn);
 }

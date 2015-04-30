@@ -1,11 +1,11 @@
 var publisher = require('cloud/rabbit_lib/publisher');
-var bd_poi = require("cloud/places/init");
+var location = require("cloud/places/init");
 var sound = require("cloud/sounds/init");
 var motion = require("cloud/motions/init");
 var req = require("request");
-//initiate the baidu_poi process
-//bd_poi.init();
-//sound.init();
+//initiate  processes
+location.init();
+sound.init();
 motion.init();
 
 AV.Cloud.define("hello", function(request, response) {
