@@ -11,8 +11,6 @@ var prev_interval = interval.prev_interval;
 var logger = require("cloud/sounds/lib/logger");
 
 
-
-
 ///*
 //A new motion rawdata arrival called 'new_motion_arrival'
 //A new sound rawdata arrival called 'new_sound_arrival'.
@@ -30,7 +28,22 @@ exports.init = function(){
 
 
     sub.registerEvent(GoProcess,queue_name,event);
-    //logger.debug("task_interval " + task_interval);
+    logger.debug("task_interval " + task_interval);
+
+    setInterval(
+        function () {
+            if(m_cache.size()>0){
+                var keys = m_cache.keys();
+                var id = keys.pop();
+                var tries = m_cache.get(id).tries;
+                if(tries>0){
+                    logger.warn("the id " + id + "tried" + m_cache.get(id).tries+ "times");
+                    logger.warn("request pre-failed id service started, id >>" + id);
+                    m_task.start(id);
+                }
+            }
+
+        },task_interval);
 
 
     //setInterval(
