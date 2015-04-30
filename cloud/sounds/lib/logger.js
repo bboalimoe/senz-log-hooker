@@ -3,16 +3,16 @@
  */
 var config = require("cloud/sounds/config.js").config;
 var log_tag = config.log_tag;
-
-    if(config.debug){
-        var log = require("tracer").colorConsole();
-    }
-    else{
-        var logentries = require('node-logentries');
-        var log = logentries.logger({
-            token:'1a528118-f843-4124-87d9-2843eace4998'
-        });
-    }
+var debug = config.debug;
+if(debug){
+    var log = require("tracer").colorConsole();
+}
+else{
+    var logentries = require('node-logentries');
+    var log = logentries.logger({
+        token:'1a528118-f843-4124-87d9-2843eace4998'
+    });
+}
 
 
 exports.info = function(info){
@@ -24,16 +24,27 @@ exports.debug = function(debug){
 }
 
 
-//exports.notice = function(notice){
+////exports.notice = function(notice){
 //    log.notice(log_tag + notice);
 //}
 
+
 exports.warn = function(warn){
-    log.warn(log_tag + warn);
+    if(debug){
+        log.warn(log_tag + warn);
+    }
+    else{
+        log.warning(log_tag + warn);
+    }
 }
 
 exports.error = function(err){
-    log.error(log_tag + err);
+    if(debug){
+        log.error(log_tag + err);
+    }
+    else{
+        log.err(log_tag + err);
+    }
 }
 
 //exports.alert = function(alert){

@@ -2,7 +2,6 @@ var publisher = require('cloud/rabbit_lib/publisher');
 var location = require("cloud/places/init");
 var sound = require("cloud/sounds/init");
 var motion = require("cloud/motions/init");
-var req = require("request");
 //initiate  processes
 location.init();
 sound.init();

@@ -16,7 +16,8 @@ exports.config = {
     },
     "serv_url" :  "http://182.92.4.173/senz/pois/",
   //"serv_url":"http://api.senz.me/senz/pois/"
-    "log_tag":"locations ==>"
+    "log_tag":"locations ==>",
+    "debug":true
 
 }
 

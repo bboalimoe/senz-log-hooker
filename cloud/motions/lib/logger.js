@@ -3,8 +3,8 @@
  */
 var config = require("cloud/motions/config.js").config;
 var log_tag = config.log_tag;
-
-if(config.debug){
+var debug = config.debug;
+if(debug){
     var log = require("tracer").colorConsole();
 }
 else{
@@ -28,12 +28,23 @@ exports.debug = function(debug){
 //    log.notice(log_tag + notice);
 //}
 
+
 exports.warn = function(warn){
-    log.warn(log_tag + warn);
+    if(debug){
+        log.warn(log_tag + warn);
+    }
+    else{
+        log.warning(log_tag + warn);
+    }
 }
 
 exports.error = function(err){
-    log.error(log_tag + err);
+    if(debug){
+        log.error(log_tag + err);
+    }
+    else{
+        log.err(log_tag + err);
+    }
 }
 
 //exports.alert = function(alert){
