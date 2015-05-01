@@ -11,7 +11,7 @@ var req_lib = require("cloud/motions/lib/http_wrapper");
 
 var get_raw_data = function(id){
     //questions on whether to set a request timeout
-    logger.info("fetch trace started")
+    logger.info("fetch sensor data started")
     var UserSensor = AV.Object.extend(config.source_db.target_class);
 
     var query_promise = function(id) {
@@ -34,7 +34,7 @@ var get_raw_data = function(id){
                 };
                 m_cache.get(o.id)["user"] = user;
                 promise.resolve(a);
-                logger.info("trace fetched successfully")
+                logger.info("sensor data fetched successfully")
             },
             function (err) {
                 promise.reject(id);
@@ -123,6 +123,7 @@ function failed(request_id) {
 var start = function(request_id){
 
     logger.info("task started");
+    logger.info("request id is " + request_id);
     if (typeof request_id != typeof "str" ) {
         logger.error("type of requestId is illegal");
         return;
