@@ -4,9 +4,9 @@ var sound = require("cloud/sounds/init");
 var motion = require("cloud/motions/init");
 //initiate  processes
 
-//location.init();
-//sound.init();
-//motion.init();
+location.init();
+sound.init();
+motion.init();
 
 AV.Cloud.define("hello", function(request, response) {
     response.success("Hello world!");

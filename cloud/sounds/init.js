@@ -19,7 +19,7 @@ var logger = require("cloud/sounds/lib/logger");
 
 
 var event = "new_sound_arrival";
-var queue_name = "sounds";
+var queue_name = "soundsOfarrival";
 
 
 exports.init = function(){
