@@ -42,6 +42,8 @@ var load_data = function(body) {
 
     var params = {};
     params["processStatus"] = "untreated";
+    params["isTrainingSample"] = config.is_sample;
+
     if ("l2_text" in body){
         params["soundType"] = config.sound_pred_code[body.l2_text];
 

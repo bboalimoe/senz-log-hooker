@@ -21,6 +21,8 @@ exports.config = {
     "stat_dict":['Sitting', 'Driving', 'Riding', 'Walking', 'Running'],
      //STAT_DICT = {'Sitting':0, 'Driving':1, 'Riding':2, 'Walking':3, 'Running': 4}
 
-    "log_tag": "motions ==> "
-    };
+    "log_tag": "motions ==> ",
+    "is_sample" : true
+
+};
 

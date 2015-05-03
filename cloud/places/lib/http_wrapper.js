@@ -72,6 +72,7 @@ var load_data = function(body) {
             return parseFloat(a.distance) - parseFloat(b.distance)
         })[0];
         suc_ids.push(obj.objectId);
+        params["isTrainingSample"] = config.is_sample;
         params["userRawdataId"] = obj.objectId;
         params["timestamp"] = obj.timestamp;
         params["processStatus"] = "untreated";

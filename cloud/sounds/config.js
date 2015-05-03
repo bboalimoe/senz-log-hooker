@@ -39,7 +39,8 @@ exports.config = {
         "in_bus",
         "classroom"
     ],
-    "log_tag":"sounds ==> "
+    "log_tag":"sounds ==> ",
+    "is_sample" : true
 
 }
 
