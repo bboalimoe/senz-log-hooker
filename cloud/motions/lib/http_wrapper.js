@@ -39,11 +39,11 @@ var lean_post = function (APP_ID, APP_KEY, params) {
 
 var load_data = function(body) {
 
-    var mid = {};
-    mid["processStatus"] = "untreated";
-    mid["motionType"] = config.stat_dict[body.predSS[0]];
-    mid["isTrainingSample"] = config.is_sample;
-    return mid;
+    var params = {};
+    params["processStatus"] = "untreated";
+    params["motionType"] = config.stat_dict[body.predSS[0]];
+    params["isTrainingSample"] = config.is_sample;
+    return params;
 
 }
 
