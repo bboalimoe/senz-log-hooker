@@ -71,13 +71,13 @@ var batch_body = function(obj_l){
     obj_l.forEach(function(obj){
         //console.log("obj is >>>>>>>>" + JSON.stringify(obj));
         logger.debug("batch pre-request object is " + JSON.stringify(obj));
-        var obj = new Object();
+        var new_obj = new Object();
         var id = Object.keys(obj)[0];
-        obj["timestamp"] = obj[id].timestamp;
-        obj["objectId"] = id;
-        obj["location"] = obj[id].location;
+        new_obj["timestamp"] = obj[id].timestamp;
+        new_obj["objectId"] = id;
+        new_obj["location"] = obj[id].location;
         //console.log("a is " + JSON.stringify(a));
-        locations.push(obj);
+        locations.push(new_obj);
     });
     var body = {"locations":locations};
     //console.log("body is ,%s",JSON.stringify(body));

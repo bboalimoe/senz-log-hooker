@@ -28,7 +28,7 @@ exports.init = function(){
     //
 
 
-    sub.registerEvent(GoProcess,queue_name,event);
+    sub.registerEvent(PlaceCallback,queue_name,event);
     logger.info("task_interval is " + task_interval);
 
     setInterval(m_task.start,task_interval);
@@ -53,7 +53,7 @@ exports.init = function(){
 
 };
 
-var GoProcess = function(msg)
+var PlaceCallback = function(msg)
 {
     logger.info("a new msg ===========> ");
     logger.info(JSON.stringify(msg));

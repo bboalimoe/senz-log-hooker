@@ -27,7 +27,7 @@ exports.init = function(){
     //
 
 
-    sub.registerEvent(GoProcess,queue_name,event);
+    sub.registerEvent(SoundCallback,queue_name,event);
     logger.debug("task_interval " + task_interval);
 
     setInterval(
@@ -79,7 +79,7 @@ exports.init = function(){
 
 };
 
-var GoProcess = function(msg)
+var SoundCallback = function(msg)
 {
     logger.info("a new sound data arrived");
     logger.info("data is " + JSON.stringify(msg));

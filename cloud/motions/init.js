@@ -29,7 +29,7 @@ exports.init = function(){
     //
 
 
-    sub.registerEvent(GoProcess,queue_name,event);
+    sub.registerEvent(SensorCallback,queue_name,event);
     logger.debug("task_interval " + task_interval);
 
 
@@ -65,7 +65,7 @@ exports.init = function(){
 
 };
 
-var GoProcess = function(msg)
+var SensorCallback = function(msg)
 {
 
     logger.info("a new motion data arrived");
