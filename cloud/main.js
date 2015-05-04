@@ -1,12 +1,15 @@
 var publisher = require('cloud/rabbit_lib/publisher');
-var location = require("cloud/places/init");
-var sound = require("cloud/sounds/init");
-var motion = require("cloud/motions/init");
-//initiate  processes
+var express = require("express");
 
-location.init();
-sound.init();
-motion.init();
+
+
+
+var app = express();
+app.get("/debug/",function(req,res){
+    res.send({"status":"debug mode","logger":"tracer"});
+
+});
+
 
 AV.Cloud.define("hello", function(request, response) {
     response.success("Hello world!");

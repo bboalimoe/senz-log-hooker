@@ -9,3 +9,4 @@ b.put(4,5)
 console.log("a keys " + a.keys());
 console.log("b keys " + b.keys());
 
+exports.a = {"a":"b"};
