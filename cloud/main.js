@@ -1,6 +1,9 @@
-var publisher = require('cloud/rabbit_lib/publisher');
+var publisher = require('./cloud/rabbit_lib/publisher');
 var express = require("express");
 var middle = require("./middlewares");
+var location = require("./cloud/places/init");
+var sound = require("./cloud/sounds/init");
+var motion = require("./cloud/motions/init");
 
 
 var app = express();
@@ -27,10 +30,27 @@ app.get("/real-data/",function(req,res){
     res.send({"status":"data set is not training set"});
 
 
+app.get("/services/motion/start/",function(req,res){
+
+    motion.init();
+    res.send({"status":"motion service started"});
+});
+
+app.get("/services/location/start/",function(req,res){
+
+    location.init();
+    res.send({"status":"location service started"})
+});
+
+app.get("/services/sound/start/",function(req,res){
+
+    sound.init();
+    res.send({"status":"sound service started"});
+});
 
 });
 
-app.listen(3123);
+app.listen(8080);
 
 //
 //AV.Cloud.define("hello", function(request, response) {
