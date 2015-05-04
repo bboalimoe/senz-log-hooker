@@ -14,7 +14,6 @@ var location_config = "cloud/places/config.json";
 var motion_config = "cloud/motions/config.json";
 var sound_config = "cloud/sounds/config.json";
 
-
 exports.toDebug = function(){
 
     var l_obj = json.readFileSync(location_config);

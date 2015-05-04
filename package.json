@@ -10,7 +10,9 @@
         "tracer" : "",
         "node-logentries": "0.0.2",
         "express": "3.x",
-        "jsonfile": ""
+        "jsonfile": "",
+        "forever":"",
+        "forever-monitor":""
 
     }
 }
