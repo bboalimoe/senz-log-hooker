@@ -2,7 +2,7 @@
  * Created by zhanghengyang on 15/4/23.
  */
 
-var config = require("cloud/places/config.js").config;
+var config = require("cloud/places/config.json").config;
 var m_cache = require("location-cache");
 var AV = require("avoscloud-sdk").AV;
 var interval = require("cloud/places/lib/interval");

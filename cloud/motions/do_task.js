@@ -3,7 +3,7 @@
  */
 
 var logger = require("cloud/motions/lib/logger");
-var config = require("cloud/motions/config.js").config;
+var config = require("cloud/motions/config.json").config;
 var m_cache = require("motion-cache");
 var AV = require("avoscloud-sdk").AV;
 var req_lib = require("cloud/motions/lib/http_wrapper");

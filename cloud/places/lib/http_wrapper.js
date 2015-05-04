@@ -3,7 +3,7 @@
  */
 var req = require("request");
 var m_cache = require("location-cache");
-var config = require("cloud/places/config.js").config;
+var config = require("cloud/places/config.json").config;
 var type = require("cloud/places/lib/lean_type.js");
 var logger = require("cloud/places/lib/logger");
 

@@ -1,4 +1,4 @@
-exports.config = {
+{
   "source_db":
     {
         "APP_KEY": "" ,

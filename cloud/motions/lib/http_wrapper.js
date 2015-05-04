@@ -4,7 +4,7 @@
 var logger = require("cloud/motions/lib/logger");
 var req = require("request");
 var m_cache = require("motion-cache");
-var config = require("cloud/motions/config.js").config;
+var config = require("cloud/motions/config.json").config;
 var type = require("cloud/motions/lib/lean_type.js");
 
 var lean_post = function (APP_ID, APP_KEY, params) {

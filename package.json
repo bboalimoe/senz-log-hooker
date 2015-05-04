@@ -10,8 +10,7 @@
         "tracer" : "",
         "node-logentries": "0.0.2",
         "express": "3.x",
-        "fs": ""
-
+        "jsonfile": ""
 
     }
 }

@@ -3,7 +3,7 @@
  */
 
 var logger = require("cloud/sounds/lib/logger");
-var config = require("cloud/sounds/config.js").config;
+var config = require("cloud/sounds/config.json").config;
 var m_cache = require("sound-cache");
 var AV = require("avoscloud-sdk").AV;
 var req_lib = require("cloud/sounds/lib/http_wrapper");

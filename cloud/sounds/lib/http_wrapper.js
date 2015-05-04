@@ -4,7 +4,7 @@
 var logger = require("cloud/sounds/lib/logger");
 var req = require("request");
 var m_cache = require("sound-cache");
-var config = require("cloud/sounds/config.js").config;
+var config = require("cloud/sounds/config.json").config;
 var type = require("cloud/sounds/lib/lean_type.js");
 
 var lean_post = function (APP_ID, APP_KEY, params) {

@@ -1,7 +1,7 @@
 /**
  * Created by zhanghengyang on 15/4/29.
  */
-var config = require("cloud/sounds/config.js").config;
+var config = require("cloud/sounds/config.json").config;
 var log_tag = config.log_tag;
 var debug = config.debug;
 if(debug){
